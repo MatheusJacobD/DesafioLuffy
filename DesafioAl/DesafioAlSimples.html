@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invasão Simples</title>
+</head>
+
+<body>
+    <input type="text" id="qtd_batalhas" placeholder="batalhas"><br>
+    <input type="text" id="qtd_marinha" placeholder="marinheiros"><br>
+    <input type="text" id="qtd_carnes" placeholder="carnes"><br><br>
+
+    <button onclick="atacar()">Atacar</button><br><br>
+
+    <div id="resultado"></div><br><br>
+</body>
+<script>
+    let energia = 100;
+
+    function atacar() {
+        let batalhas = Number(qtd_batalhas.value);
+        let marinheiros = Number(qtd_marinha.value);
+        let carnes = Number(qtd_carnes.value);
+
+        let result = 0;
+
+        resultado.innerHTML = `
+                ------------------------------------------- <br>
+                Quantidade de batalhas: ${batalhas}<br>
+                Quantidade de marinheiros: ${marinheiros}<br>
+                Quantidade de carnes: ${carnes}<br>
+                -------------------------------------------
+                <br><br>
+            `;
+
+        for (let i = 0; i < batalhas; i++) {
+            let count = 0;
+
+            if (result == 1) {
+                resultado.innerHTML += `<br>🛞 Não é possível iniciar a ${i + 1} batalha, acabou a carne e a energia.<br>`;
+            } else {
+                if (i > 0) {
+                    energia -= 10;
+                }
+
+                resultado.innerHTML += `${i + 1} batalha iniciada:<br>
+                Quantidade de energia: ${energia}<br>
+            `;
+
+                // if (energia < 0) {
+                //     if (carnes > 0) {
+                //         carnes--;
+                //         energia = 100;
+                //     } else {
+                //         result = 1;
+                //     }
+                // }
+
+                if (energia > energia - (marinheiros * 5)) {
+                    if (carnes > 0) {
+                        carnes--;
+                        energia += 100;
+                    } else {
+                        result = 1;
+                    }
+                    let en = energia;
+                    energia = energia - (marinheiros * 5);
+
+                    if (energia >= 0){
+                        count = marinheiros;
+                    } else{
+                        count = en / 5;
+                    }
+                }
+
+                // for (let j = 0; j < marinheiros; j++) {
+                //     if (energia < 5) {
+                //         if (carnes > 0) {
+                //             carnes--;
+
+                //             energia = 100;
+
+                //             energia -= 5;
+                //             count++;
+                //         } else {
+                //             result = 1;
+                //         }
+                //     } else {
+                //         energia -= 5;
+
+                //         count++;
+                //     }
+                // }
+
+                if (energia < 0){
+                    energia = 0;
+                }
+
+                if (result == 1) {
+                    resultado.innerHTML += `
+                    Resultado: Luffy foi derrotado, derrotando ${count} marinheiro(s)<br><br>
+                    ⚡Energia Restante: ${energia}<br>
+                    🥩Carnes Restantes: ${carnes}<br><br><br>
+                `;
+                } else {
+                    resultado.innerHTML += `
+                    Resultado: Luffy saiu vitorioso, derrotando ${count} marinheiro(s)<br><br>
+                    ⚡Energia Restante: ${energia}<br>
+                    🥩Carnes Restantes: ${carnes}<br><br><br>
+                `;
+                }
+            }
+
+        }
+    }
+</script>
+
+</html>
